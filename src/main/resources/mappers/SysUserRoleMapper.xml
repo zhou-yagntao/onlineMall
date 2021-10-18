@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.SystemRoleMapper">
+       <resultMap id="BaseResult" type="com.zyt.entity.SystemRole">
+            <result column="role_id" property="role_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+            <result column="role_name" property="role_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <result column="role_context" property="role_context" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <result column="role_create_time" property="role_create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+            <result column="role_desc" property="role_desc" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <result column="role_update_time" property="role_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+       </resultMap>
+
+       <select id="getRoleIdByRoleName" parameterType="String" resultType="int">
+         select role_id from sys_role where 1 = 1
+           <if test="roleName != null">and role_name = #{roleName}</if>
+       </select>
+
+
+</mapper>

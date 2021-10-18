@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.ProductClickMapper">
+    <resultMap id="BaseResult" type="com.zyt.entity.ProductClick">
+        <result column="proClickId" property="proClickId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+        <result column="user_id" property="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+        <result column="proClickProId" property="proClickProId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+        <result column="proClickCounts" property="proClickCounts" jdbcType="INTEGER" javaType="java.lang.Integer" />
+        <result column="proClickTime" property="proClickTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </resultMap>
+
+    <select id="getProductClick" parameterType="int" resultType="int">
+       select  proClickCounts from productClick where 1 = 1
+        <if test="prodId != null">and proClickProId = #{prodId}</if>
+    </select>
+
+    <update id="updateProductClickCounts" parameterType="int">
+       update productClick set proClickCounts = proClickCounts +  1 where  1 = 1
+        <if test="productId != null">proClickProId = #{productId}</if>
+    </update>
+
+    <select id="getUserActiveInfo" resultMap="BaseResult">
+       select * from productClick
+    </select>
+
+    <select id="getProductIdByUserId" parameterType="java.util.List" resultType="int">
+        select  proClickProId from productClick where  1 = 1 and user_id in
+        <foreach collection="similarityBetweenUsers" open="(" separator="," close=")" item="userId">
+            #{userId}
+        </foreach>
+    </select>
+</mapper>

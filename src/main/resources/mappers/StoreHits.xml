@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--<mapper namespace="com.zyt.mapper.StoreHitsMapper">-->
+<!--    <resultMap id="BaseResult" type="com.zyt.entity.StoreHits">-->
+<!--         <result column="sClickId" property="sClickId" javaType="java.lang.Integer" jdbcType="INTEGER"/>-->
+<!--         <result column="sstoreId" property="sstoreId" javaType="java.lang.Integer" jdbcType="INTEGER"/>-->
+<!--         <result column="sotreHits" property="sotreHits" javaType="java.lang.Integer" jdbcType="INTEGER"/>-->
+<!--         <association property="store" javaType="com.zyt.entity.Store" resultMap="com.zyt.mapper.StoreMapper"/>-->
+<!--    </resultMap>-->
+
+<!--    <select id="topFiveStoreInfo" parameterType="int" resultMap="BaseResult">-->
+<!--      select  sstoreId from -->
+<!--    </select>-->
+<!--</mapper>-->
+<mapper></mapper>

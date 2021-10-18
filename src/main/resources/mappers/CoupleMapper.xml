@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.CoupleMapper">
+    <resultMap id="BaseResult" type="com.zyt.entity.Couple">
+        <result column="cid" property="Cid" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="cname" property="Cname" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="coupleType" property="CoupleType" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="coupleImg" property="CoupleImg" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="coupleRelMaxCounts" property="CoupleRelMaxCounts" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="coupleChangeMoney" property="CoupleChangeMoney" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="perLimitedCouple" property="PerLimitedCouple" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="coupleUseScenarios" property="CoupleUseScenarios" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="isCrossStoreUse" property="IsCrossStoreUse" javaType="java.lang.Boolean" jdbcType="BOOLEAN"/>
+        <result column="coupleObtainStart" property="CoupleObtainStart" javaType="java.util.Date" jdbcType="DATE"/>
+        <result column="coupleObtainEnd" property="CoupleObtainEnd" javaType="java.util.Date" jdbcType="DATE"/>
+        <result column="coupleUseStart" property="CoupleUseStart" javaType="java.util.Date" jdbcType="DATE"/>
+        <result column="coupleUseEnd" property="CoupleUseEnd" javaType="java.util.Date" jdbcType="DATE"/>
+        <result column="coupleCollected" property="CoupleCollected" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="coupleSurplus" property="CoupleSurplus" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="coupleUseCondition" property="CoupleUseCondition" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="orderAmount" property="OrderAmount" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="customerType" property="CustomerType" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="coupleStoreId" property="CoupleStoreId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+
+        <!--<association column="coupleStoreId" property="store" javaType="com.zyt.entity.Store" jdbcType="INTEGER">-->
+<!--        <association property="store" column="coupleStoreId" javaType="com.zyt.entity.Store" jdbcType="INTEGER">-->
+<!--            <result column="storeId" property="StoreId" javaType="java.lang.Integer" jdbcType="INTEGER"/>-->
+<!--            <result column="storeName" property="StoreName" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
+<!--            <result column="storeOwner" property="StoreOwner" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
+<!--            <result column="storeImg" property="StoreImg" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
+<!--            <result column="storeAddress" property="StoreAddress" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
+<!--            <result column="longitude" property="Longitude" javaType="java.lang.Double" jdbcType="DOUBLE"/>-->
+<!--            <result column="atitude" property="Atitude" javaType="java.lang.Double" jdbcType="DOUBLE"/>-->
+<!--            <result column="settledDate" property="SettledDate" javaType="java.util.Date" jdbcType="DATE"/>-->
+<!--            <result column="storeDesc" property="StoreDesc" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
+<!--        </association>-->
+    </resultMap>
+
+        <insert id="addCoupleInfo" parameterType="com.zyt.entity.Couple">
+           insert  into couple
+             (cid,cname,coupleType,coupleImg,coupleStoreId,coupleRelMaxCounts,coupleChangeMoney,perLimitedCouple,coupleUseScenarios,isCrossStoreUse,coupleObtainStart,coupleObtainEnd,coupleUseStart,coupleUseEnd,coupleUseCondition,orderAmount,customerType)
+             values
+             (0,#{Cname},#{CoupleType},#{CoupleImg},#{CoupleStoreId},#{CoupleRelMaxCounts},#{CoupleChangeMoney},#{PerLimitedCouple},#{CoupleUseScenarios},#{IsCrossStoreUse},#{CoupleObtainStart},#{CoupleObtainEnd},#{CoupleUseStart},#{coupleUseEnd},#{CoupleUseCondition},#{OrderAmount},#{CustomerType})
+
+        </insert>
+
+        <select id="getAllCoupleInfos" parameterType="int" resultMap="BaseResult">
+                select  * from couple where 1=1 and coupleStoreId = #{storeId} limit #{start},#{end}
+        </select>
+
+        <select id="getAllCoupleInfoCounts" parameterType="int" resultType="int">
+               select count(*) from couple where 1 = 1 and coupleStoreId = #{storeId}
+        </select>
+
+</mapper>

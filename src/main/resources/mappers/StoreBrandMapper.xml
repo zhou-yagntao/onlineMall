@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.BrandMapper">
+
+            <resultMap id="BaseResult" type="com.zyt.entity.StoreBrand">
+                    <result column="brandId"  property="BrandId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+                    <result column="brandName" property="BrandName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+                    <result column="brandType" property="BrandType" javaType="java.lang.String" jdbcType="VARCHAR" />
+                    <result column="brandCreatTime" property="BrandCreatTime" javaType="java.util.Date" jdbcType="DATE"/>
+                    <result column="brandDescrible" property="BrandDescrible" javaType="java.lang.String" jdbcType="VARCHAR"/>
+                    <result column="isForbidden" property="IsForbidden" javaType="java.lang.String" jdbcType="VARCHAR"/>
+                    <result column="indexLetter" property="IndexLetter" javaType="java.lang.String" jdbcType="VARCHAR"/>
+                    <collection property="storeInfo" ofType="com.zyt.entity.Store">
+                        <result column="storeId" property="StoreId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+                        <result column="storeName" property="StoreName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+                        <result column="storeOwner" property="StoreOwner" javaType="java.lang.String" jdbcType="VARCHAR"/>
+                        <result column="storeImg" property="StoreImg" javaType="java.lang.String" jdbcType="VARCHAR"/>
+                        <result column="storeAddress" property="StoreAddress" javaType="java.lang.String" jdbcType="VARCHAR"/>
+                        <result column="longitude" property="Longitude" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+                        <result column="atitude" property="Atitude" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+                        <result column="settledDate" property="SettledDate" javaType="java.util.Date" jdbcType="DATE"/>
+                        <result column="storeDesc" property="StoreDesc" javaType="java.lang.String" jdbcType="VARCHAR"/>
+                    </collection>
+            </resultMap>
+
+
+            <sql id="BaseSql">
+                  brandId,brandName,brandType,brandCreatTime,brandDescrible,isForbidden,indexLetter
+            </sql>
+
+            <insert id="pushStoreBrandInfos" parameterType="com.zyt.entity.StoreBrand">
+                insert into storeBrand values(0,#{BrandName},#{BrandType},#{BrandCreatTime},#{BrandDescrible},#{IsForbidden},#{IndexLetter})
+            </insert>
+
+            <select id="getStoreBrandDetailInfos" resultMap="BaseResult">
+                select brand.* from (select  <include refid="BaseSql" /> from storeBrand where 1=1 limit #{start},#{end}) as brand where brand.isForbidden = #{isForbidden}
+            </select>
+
+            <select id="getStoreBrandCounts" resultType="int">
+                select  count(*) from storeBrand where isForbidden = #{isForbidden}
+            </select>
+
+            <update id="updateStoreBrandInfosByBrandId">
+                update storeBrand <set>
+                                      <if test="isForbidden != null">isForbidden = #{isForbidden}</if>
+                                  </set>
+                where brandId = #{brandId}
+            </update>
+
+            <delete id="deleteStoreBrandInfosByBrandId" parameterType="int">
+                delete  from storeBrand where brandId = #{brandId}
+            </delete>
+
+            <select id="getAllProductBrandName" resultMap="BaseResult">
+                select brandName from storeBrand where 1=1
+            </select>
+
+            <select id="getBrandIdByBrandName" parameterType="String" resultMap="BaseResult">
+                 select brandId from  storeBrand where brandName = #{brandName}
+            </select>
+
+            <select id="gerBrandIdByItems" resultType="int">
+                 select brandId from  storeBrand where brandName = #{brandName}
+            </select>
+
+            <select id="getBrandNameByBrandId" parameterType="int" resultType="String">
+                 select brandName from storeBrand where brandId = #{brandId}
+            </select>
+
+            <select id="getAllProductBrandTypeMenu" resultMap="BaseResult">
+                   select  * from storeBrand
+            </select>
+
+            <select id="getStoreInfoOfBrand" parameterType="String" resultMap="BaseResult">
+                    select  * from storebrand a,store b,brand_store c where 1 = 1 and  a.brandId = c.bsBrandId and b.storeId = c.bsStoreId and a.brandName = #{brandName} and b.storeAddress like #{currentPostion}
+            </select>
+
+            <select id="getBrandIdOfCurrBrandName" parameterType="String" resultType="int">
+                   select brandId from storeBrand where 1=1 and brandName = #{brandName}
+            </select>
+
+            <select id="getCurrentBrandNameByBrandId" parameterType="int" resultType="String">
+                select distinct brandName from  storeBrand where 1 = 1 and brandId = #{brand_Id}
+            </select>
+</mapper>
+

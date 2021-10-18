@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.StockMapper">
+    <resultMap id="BaseResult" type="com.zyt.entity.Stock">
+          <result column="sid" property="sid" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="sproId" property="sproId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="stockCounts" property="stockCounts" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="stock_lock" property="stock_lock" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="selectStockOfCurrProdId" parameterType="int" resultType="int">
+       select stockCounts from stock where 1 =1 and sproId = #{id}
+    </select>
+
+    <select id="selectStockCountsOfCurrProdId" parameterType="int" resultType="int">
+      select stock_lock from  stock  where 1 =1 and sproId = #{id}
+    </select>
+
+    <update id="updateStockOfCurrProduct" parameterType="int">
+      update stock set stock_lock = stock_lock + #{lockCount} where sproId = #{id} and stockCounts - stock_lock >= #{lockCount}
+    </update>
+
+    <update id="unLockStock" parameterType="int">
+        update stock set stock_lock = stock_lock - #{LockCount} where sproId = #{prod_Id}
+    </update>
+</mapper>

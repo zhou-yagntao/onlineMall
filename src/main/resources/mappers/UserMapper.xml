@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.UserMapper">
+        <resultMap id="BaseResult" type="com.zyt.entity.Users">
+             <result column="userId" property="UserId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+             <result column="userName" property="UserName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+             <result column="userNickName" property="UserNickName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+             <result column="loginPassword" property="LoginPassword" javaType="java.lang.String" jdbcType="VARCHAR"/>
+             <result column="userIdentity" property="UserIdentity" javaType="java.lang.String" jdbcType="VARCHAR"/>
+             <result column="userPhoneNum" property="UserPhoneNum" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        </resultMap>
+    <select id="getUserIsFinishedRegsiter" parameterType="String" resultMap="BaseResult">
+         select *from users where 1 = 1
+        <if test="phoneNum != null">and userPhoneNum = #{phoneNum}</if>
+    </select>
+
+    <insert id="addUserRegisterInfos" parameterType="com.zyt.entity.Users">
+         insert  into users values(0,#{UserName},#{UserNickName},#{LoginPassword},#{UserIdentity},#{UserPhoneNum})
+    </insert>
+
+    <select id="getUserLoginPass" parameterType="String" resultType="String">
+         select loginPassword from users where userNickName = #{userName}
+    </select>
+
+</mapper>

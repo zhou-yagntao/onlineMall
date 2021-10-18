@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.BatchSuperviseProductMapper">
+     <!-- ready to batch add data to mysql data -->
+<!--    <insert id="batchAddProductInfos" parameterType="com.zyt.entity.Product">-->
+<!--           insert into product (prodId,prodSort,prodName,prodImage,ProdReleaseTime,prodStatus,prodNvipAllPrice,prodVipAllPrice,proIntegral,proGrowthvalue,proStoreName,prodBrandId,isOnSheleves,prodEveryMaxStorage,prodMoral,isUseCouple,isUseIntegral)values(0,#{ProdSort},#{ProdName},#{ProdImage},#{ProdReleaseTime},#{ProdStatus},#{ProdNvipAllPrice},#{ProdVipAllPrice},#{ProdIntegral},#{ProdGrowthvalue},#{ProStoreName},#{storeBrandId},#{IsOnSheleves},#{prodEveryMaxStorage},#{prodMoral},#{IsUseCouple},#{IsUseIntegral})-->
+<!--    </insert>-->
+    <insert id="batchAddProductInfos">
+          insert into product (prodId,prodSort,prodName,prodImage,ProdReleaseTime,prodStatus,prodNvipAllPrice,prodVipAllPrice,proIntegral,proGrowthvalue,proStoreName,prodBrandId,isOnSheleves,prodEveryMaxStorage,prodMoral,isUseCouple,isUseIntegral)
+          values
+          <foreach collection="productList" item="product" index="index" separator=",">
+              (0,#{product.ProdSort},#{product.ProdName},#{product.ProdImage},#{product.ProdReleaseTime},#{product.ProdStatus},#{product.ProdNvipAllPrice},#{product.ProdVipAllPrice},#{product.ProdIntegral},#{product.ProdGrowthvalue},#{product.ProStoreName},#{product.storeBrandId},#{product.IsOnSheleves},#{product.prodEveryMaxStorage},#{product.prodMoral},#{product.IsUseCouple},#{product.IsUseIntegral})
+          </foreach>
+        <!--on duplicate key update
+         prodSort = values(prodSort),
+         prodName = values(prodName),
+         prodImage = values(prodImage),
+         ProdReleaseTime = values(ProdReleaseTime ),
+         prodStatus = values(prodStatus),
+         prodNvipAllPrice = values(prodNvipAllPrice),
+         prodVipAllPrice = values(prodVipAllPrice),
+         proIntegral = values(proIntegral),
+         proGrowthvalue = values(proGrowthvalue),
+         proStoreName = values(proStoreName),
+         prodBrandId = values(prodBrandId),
+         isOnSheleves = values(isOnSheleves),
+         prodEveryMaxStorage = values(prodEveryMaxStorage),
+         prodMoral = values(prodMoral),
+         isUseCouple = values(isUseCouple),
+         isUseIntegral = values(isUseIntegral)-->
+
+    </insert>
+    <delete id="batchDeleteProductInfos" parameterType="java.util.List" >
+         delete from product where prodId in
+                    <foreach collection="list" item="newListParams"  open="(" separator="," close=")">
+                         #{newListParams}
+                    </foreach>
+    </delete>
+</mapper>

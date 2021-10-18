@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.StoreProfitMapper">
+    <resultMap id="BaseResult" type="com.zyt.entity.StoreProfit">
+          <result column="profit_id" property="profit_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+          <result column="store_Id" property="store_Id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+          <result column="profit" property="profit" javaType="java.lang.Double" jdbcType="DOUBLE" />
+          <result column="getProfitDate" property="getProfitDate" javaType="java.util.Date" jdbcType="DATE"/>
+    </resultMap>
+
+    <select id="getStoreProfitInfoOfCurrStoreId" resultType="int" resultMap="BaseResult">
+        select * from store_profit where 1  = 1 and store_Id = #{StoreId}
+    </select>
+
+    <insert id="saveStoreProfitInfoOfCurrStoreId" parameterType="com.zyt.entity.StoreProfit">
+       insert  into store_profit  values(0,#{storeProfit.store_Id},#{storeProfit.profit},#{storeProfit.getProfitDate})
+    </insert>
+
+    <update id="updateStoreProfitInfoOfCurrStoreId" parameterType="com.zyt.entity.StoreProfit">
+        update store_profit set profit = profit + #{storeProfit.profit},getProfitDate = #{storeProfit.getProfitDate} where 1 = 1 and store_Id = #{storeProfit.store_Id}
+    </update>
+</mapper>

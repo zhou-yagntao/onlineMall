@@ -1,0 +1,6 @@
+spring:
+    alicloud:
+      sms:
+        host: https://cxwg.market.alicloudapi.com
+        path: /sendSms
+        appCode: 25aeab38c1af439aaa9f94906df74b02

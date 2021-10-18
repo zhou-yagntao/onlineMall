@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.MemberLeaveMapper">
+     <resultMap id="BaseResult" type="com.zyt.entity.MemeberLeave">
+         <result column="lid" property="lid" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+         <result column="lname" property="lname" javaType="java.lang.String" jdbcType="VARCHAR"/>
+         <result column="currGrouth" property="currGrouth" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+         <result column="growth_point" property="growthPoint" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+         <result column="default_status" property="defaultStatus" javaType="java.lang.Boolean" jdbcType="BOOLEAN"/>
+         <result column="priviledge_member_price" property="priviledgeMemberPrice" javaType="java.lang.Boolean" jdbcType="BOOLEAN"/>
+         <result column="priviledge_birthday" property="priviledgeBirthday" javaType="java.lang.Boolean" jdbcType="BOOLEAN"/>
+         <result column="note" property="note" javaType="java.lang.String" jdbcType="VARCHAR"/>
+         <result column="memberLeaveId" property="memberLeaveId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+     </resultMap>
+
+    <insert id="addMemberLeaveInfo" parameterType="com.zyt.entity.MemeberLeave">
+        insert into member_level values(0,#{memeberLeave.Lname},#{memeberLeave.currGrouth},#{memeberLeave.growthPoint},#{memeberLeave.defaultStatus},#{memeberLeave.priviledgeMemberPrice},#{memeberLeave.priviledgeBirthday},#{memeberLeave.note},#{memeberLeave.memberLeaveId})
+    </insert>
+
+    <select id="getCurrentGrouthOfLeaveId" resultType="int" parameterType="int">
+        select currGrouth from member_level where 1 = 1 and memberLeaveId = #{leaveId}
+    </select>
+
+    <select id="getGrowthPointOfCurLeaveId" parameterType="int" resultType="int">
+      select growth_point from member_level where 1 = 1 and memberLeaveId = #{leaveId}
+    </select>
+
+    <select id="getLnameOfCurLeaveId" parameterType="int" resultType="String">
+      select  lname from member_level where  1 = 1 and memberLeaveId = #{leaveId}
+    </select>
+
+    <update id="updateMemberLeaveInfoOfCurrentLeaveId">
+       update member_level set lname = #{nameOfCurLeadId},currGrouth = #{newCurrGrouth},growth_point = #{newGrouthPoint} where 1 = 1 and memberLeaveId = #{leaveId}
+    </update>
+
+    <update id="updateMemberLeaveGrouthPointToZero">
+       update member_level set growth_point = 0 where 1 = 1 and memberLeaveId = #{leaveId}
+    </update>
+
+    <update id="updateCurrGrouthOfCurrLeaveId" parameterType="int">
+       update  member_level set currGrouth = #{currGrouth} where 1 = 1 and memberLeaveId = #{leaveId}
+    </update>
+
+    <select id="getCurrGroupProportion" resultType="Double" parameterType="int">
+        select a.currGrouth/a.growth_point as grouthProp from (select currGrouth,growth_point from member_level where memberLeaveId = #{leaveId}) a
+    </select>
+
+    <select id="getLeaveNameOfCurrSocialUser" parameterType="int" resultType="String">
+        select lname from member_level where 1 = 1 and  memberLeaveId = #{leaveId}
+    </select>
+</mapper>

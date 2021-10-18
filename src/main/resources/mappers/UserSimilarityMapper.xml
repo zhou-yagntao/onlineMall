@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.UserSimilarityMapper">
+
+    <resultMap id="BaseResult" type="com.zyt.entity.UserSimilarity">
+         <result column="user_Simi_Id" property="userSid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+         <result column="user_Id" property="userId" javaType="java.lang.Long" jdbcType="INTEGER" />
+         <result column="user_red_Id" property="userRefId" javaType="java.lang.Long" jdbcType="INTEGER" />
+         <result column="similarity" property="similarity" javaType="java.lang.Double" jdbcType="DOUBLE" />
+    </resultMap>
+
+    <insert id="createUserSimilarity" parameterType="java.util.List">
+        insert  into user_similarity value
+        <foreach collection="similarities" separator=","  item="temp">
+            (0,#{temp.userId},#{temp.userRefId},#{temp.similarity})
+        </foreach>
+    </insert>
+
+    <select id="getUserSimilarityInfo" resultMap="BaseResult">
+        select * from user_similarity
+    </select>
+
+    <delete id="deleteUserSimilarityInfo">
+         delete from  user_similarity
+    </delete>
+</mapper>

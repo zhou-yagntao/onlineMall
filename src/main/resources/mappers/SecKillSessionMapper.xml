@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.SecKillSessionMapper">
+    <resultMap id="BaseResult" type="com.zyt.entity.SecKillSession">
+        <result column="sec_kill_id" property="sec_kill_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="sec_kill_name" property="sec_kill_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="start_time" property="start_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+        <result column="end_time" property="end_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+        <result column="enable_status" property="enable_status" javaType="java.lang.Boolean" jdbcType="BOOLEAN" />
+        <result column="create_time" property="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+        <result column="store_id" property="store_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </resultMap>
+
+     <insert id="saveSecKillSessionInfos" parameterType="com.zyt.entity.SecKillSession">
+        insert  into seckill_session values(0,#{secKillSession.sec_kill_name},#{secKillSession.start_time},#{secKillSession.end_time},#{secKillSession.enable_status},#{secKillSession.create_time},#{secKillSession.store_id})
+     </insert>
+
+    <select id="getAllSecKillInfoOfCurrStore" resultMap="BaseResult">
+        select * from seckill_session where 1 = 1
+        <if test="storeId != null">and store_id = #{storeId}</if>
+        <if test="subTime != null">and create_time like #{subTime}</if>
+        limit #{start},#{end}
+    </select>
+
+    <select id="getSecKillInfoCountsOfCurrStore" resultType="int">
+        select  count(*) from seckill_session where 1 = 1
+        <if test="storeId != null">and store_id = #{storeId}</if>
+        <if test="subTime != null">and create_time like #{subTime}</if>
+    </select>
+
+
+    <select id="getKillInfoByItems" resultMap="BaseResult">
+        select * from seckill_session where 1 = 1
+        <if test="storeId != null">and store_id = #{storeId}</if>
+        <if test="killName != null">and sec_kill_name = #{killName}</if>
+        <if test="flag != null">and enable_status = #{flag}</if>
+        limit #{start},#{end}
+    </select>
+
+    <select id="getKillInfoCountsByItems" resultType="int">
+        select  count(*) from seckill_session where 1 = 1
+        <if test="storeId != null">and store_id = #{storeId}</if>
+        <if test="killName != null">and sec_kill_name = #{killName}</if>
+        <if test="flag != null">and enable_status = #{flag}</if>
+    </select>
+
+    <delete id="batchDeleteKillInfo" parameterType="java.util.List">
+        delete  from seckill_session where 1 = 1 and sec_kill_id in
+        <foreach collection="list" item="secKillIdinfo" open="(" separator="," close=")">
+            #{secKillIdinfo}
+        </foreach>
+    </delete>
+
+
+    <delete id="deleteKillInfoByKillId" parameterType="int">
+      delete  from seckill_session  where 1 = 1 and sec_kill_id = #{kill_id}
+    </delete>
+
+    <select id="getSessionsInfoOfLatestThreeDay" parameterType="String" resultMap="BaseResult">
+      select  * from  seckill_session  where 1 = 1  and start_time between #{startTime} and #{endTime}
+    </select>
+</mapper>

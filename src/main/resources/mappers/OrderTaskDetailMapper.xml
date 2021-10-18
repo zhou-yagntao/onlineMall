@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.OrderTaskDetailMapper">
+    <resultMap id="BaseResult" type="com.zyt.entity.OrderTaskDetail">
+        <result column="id" property="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="prod_id" property="prod_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="prod_name" property="prod_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="prod_num" property="prod_num" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="task_id" property="task_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="lock_stauts" property="lock_stauts" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </resultMap>
+
+    <insert id="saveOrderTaskDetails" parameterType="com.zyt.entity.OrderTaskDetail">
+        insert  into  order_task_detail  values(0,#{orderTaskDetail.prod_id},#{orderTaskDetail.prod_name},#{orderTaskDetail.prod_num},#{orderTaskDetail.task_id},#{orderTaskDetail.lock_stauts})
+    </insert>
+
+    <select id="getOrderTaskDetailsById" resultType="int" resultMap="BaseResult">
+        select * from order_task_detail where id = #{detailsId}
+    </select>
+
+    <update id="updateOrderStockStatus" parameterType="int">
+       update  order_task_detail set lock_stauts = #{status} where 1 = 1 and id = #{detailsId}
+    </update>
+
+    <select id="getOrderTaskDetailsByTaskIdAndStatus" parameterType="int" resultMap="BaseResult">
+        select * from order_task_detail where 1 = 1 and id = #{orderDetailsId} and lock_stauts = #{status}
+    </select>
+</mapper>

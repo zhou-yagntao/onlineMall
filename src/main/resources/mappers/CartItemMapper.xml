@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.CartItemMapper">
+       <resultMap id="BaseResult" type="com.zyt.entity.CartItem">
+           <result column="cart_item_id" property="cartItemId" javaType="java.lang.Integer" jdbcType="INTEGER" />
+           <result column="user_id" property="userId" javaType="java.lang.Integer" jdbcType="INTEGER" />
+           <result column="prod_id" property="prodId" javaType="java.lang.Integer" jdbcType="INTEGER" />
+           <result column="is_check" property="isCheck" javaType="java.lang.Boolean" jdbcType="BOOLEAN" />
+           <result column="prod_name" property="prodName" javaType="java.lang.String" jdbcType="VARCHAR" />
+           <result column="prod_img" property="prodImg" javaType="java.lang.String" jdbcType="VARCHAR" />
+           <result column="prod_status" property="prodStatus" javaType="java.lang.String" jdbcType="VARCHAR" />
+           <result column="prod_price" property="prodPrice" javaType="java.lang.Integer" jdbcType="INTEGER" />
+           <result column="prod_count" property="count" javaType="java.lang.Integer" jdbcType="INTEGER" />
+           <result column="prod_totalPrice" property="totalPrice" javaType="java.lang.Integer" jdbcType="INTEGER" />
+           <result column="prod_storeName" property="storeName" javaType="java.lang.String" jdbcType="VARCHAR" />
+           <result column="gift_integration" property="gift_growth" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+           <result column="gift_growth" property="gift_growth" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+
+       </resultMap>
+
+       <insert id="addProductToCart" parameterType="com.zyt.entity.CartItem">
+         insert  into cart_items values(0,#{cartItem.userId},#{cartItem.prodId},#{cartItem.isCheck},#{cartItem.prodName},#{cartItem.prodImg},#{cartItem.prodStatus},#{cartItem.prodPrice},#{cartItem.count},#{cartItem.totalPrice},#{cartItem.storeName})
+       </insert>
+
+        <select id="getCartItemInfoOfCurrUser" parameterType="int" resultMap="BaseResult">
+              select * from cart_items where 1 = 1 and user_id = #{userId} order by cart_item_id desc
+        </select>
+
+        <update id="updateCartItemInfoOfCurrentProdIdAndUser" >
+            update cart_items set is_check = #{isCheck} where 1 = 1 and user_id = #{userId} and cart_item_id = #{prodId}
+        </update>
+
+        <select id="getCartItemInfoCountsOfIsCheck"  resultType="int">
+            select count(*) from cart_items where 1  = 1 and user_id = #{user_Id} and is_check = #{isCheck}
+        </select>
+
+        <select id="getCartItemInfoTotalPriceOfIsCheck" resultType="int">
+            select sum(prod_totalPrice) from cart_items where 1  = 1 and user_id = #{user_Id} and is_check = #{isCheck}
+        </select>
+
+        <update id="updateCurrCheckProdCountAndTotalPrice" parameterType="int">
+              update cart_items
+                <set>
+                    <if test="count != null">prod_count = #{count}</if>
+                    <if test="prodPrirse != null">,prod_totalPrice = #{prodPrirse}</if>
+                </set>
+                where 1 = 1 and cart_item_id = #{cartId}
+        </update>
+
+    <select id="getIsCheckedProdinfoOfCurrUser" resultMap="BaseResult">
+        select * from cart_items where 1  = 1  and user_id = #{userId} and is_check = #{isCheck}
+    </select>
+
+    <select id="getIsCheckedProdTotalPriceOfCurrUser" resultType="int">
+      select sum(prod_totalPrice) from cart_items where 1  = 1  and user_id = #{userId} and is_check = #{isCheck}
+    </select>
+
+</mapper>

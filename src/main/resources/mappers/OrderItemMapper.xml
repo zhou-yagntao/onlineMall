@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.OrderItemMapper">
+    <resultMap id="BaseResult" type="com.zyt.entity.OrderItems">
+        <result column="order_item_id" property="order_item_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="order_id" property="order_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="order_sn" property="order_sn" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="prod_id" property="prod_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="prod_name" property="prod_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="prod_pic" property="prod_pic" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="prod_brand" property="prod_brand" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="prod_quantity" property="prod_quantity" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="prod_Store" property="prod_Store" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="gift_integration" property="gift_integration" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="gift_growth" property="gift_growth" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="prod_status" property="prod_status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="prod_price" property="prod_price" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <insert id="saveOrderItemInfos" parameterType="java.util.List">
+       insert  into  order_item
+       values
+        <foreach collection="list" item="orderItems"  index="index" separator="," >
+            (0,#{orderItems.order_id},#{orderItems.order_sn},#{orderItems.prod_id},#{orderItems.prod_name},#{orderItems.prod_pic},#{orderItems.prod_brand},#{orderItems.prod_quantity},#{orderItems.prod_Store},
+            #{orderItems.gift_integration},#{orderItems.gift_growth},#{orderItems.prod_status},#{orderItems.prod_price})
+        </foreach>
+    </insert>
+
+    <select id="getOrderItemsPayInfoByOrderSn" parameterType="String" resultMap="BaseResult">
+        select  * from order_item where 1 = 1 and order_sn = #{orderSn}
+    </select>
+
+    <select id="getOrderItemsInfoByOrderSn" parameterType="String" resultMap="BaseResult">
+        select  * from order_item where 1 = 1 and order_sn = #{orderSn}
+    </select>
+</mapper>

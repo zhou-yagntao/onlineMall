@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.ProductPraiseInfosMapper">
+    <resultMap id="BaseResult" type="com.zyt.entity.ProductPraise">
+            <result column="prodPid" property="ProdPid" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <result column="prodPProId" property="ProdPProId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <result column="prodPdesc" property="ProdPdesc" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <result column="prodScore" property="ProdScore" javaType="java.lang.Double" jdbcType="DOUBLE" />
+            <result column="prodPTime" property="ProdPTime" javaType="java.util.Date" jdbcType="DATE" />
+    </resultMap>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.AddressMapper">
+    <resultMap id="BaseResult" type="com.zyt.entity.Addreess">
+        <result column="address_id" property="address_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="user_id" property="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="user_name" property="user_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="user_area" property="user_area" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="add_detail" property="add_detail" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="contact_num" property="contact_num" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="isCheck" property="isCheck" javaType="java.lang.Boolean" jdbcType="BOOLEAN"/>
+    </resultMap>
+
+    <insert id="addPersonAcceptAddress" parameterType="com.zyt.entity.Addreess">
+        insert  into address values(0,#{addreess.user_id},#{addreess.user_name},#{addreess.user_area},#{addreess.add_detail},#{addreess.contact_num})
+    </insert>
+
+    <select id="getCurrUserAcceptAddress" parameterType="String" resultMap="BaseResult">
+        select * from address where 1  = 1 and user_name = #{loginUserName}
+    </select>
+
+    <select id="getAddressInfoByAddressId" parameterType="int" resultMap="BaseResult">
+        select  * from address where 1  = 1 and address_id = #{address_id}
+    </select>
+
+    <select id="getInitUserAcceptAddress" resultMap="BaseResult">
+        select * from address where 1  = 1 and user_name = #{userName} and isCheck = #{isCheck}
+    </select>
+</mapper>

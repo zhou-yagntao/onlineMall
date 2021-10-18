@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.StoreMapper">
+    <resultMap id="BaseResult" type="com.zyt.entity.Store">
+        <result column="storeId" property="StoreId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result column="storeName" property="StoreName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="storeOwner" property="StoreOwner" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="storeImg" property="StoreImg" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="storeAddress" property="StoreAddress" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result column="longitude" property="Longitude" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result column="atitude" property="Atitude" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result column="settledDate" property="SettledDate" javaType="java.util.Date" jdbcType="DATE"/>
+        <result column="storeDesc" property="StoreDesc" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="basicSql">
+        storeId,storeName,storeOwner,storeImg,storeAddress,longitude,atitude,settledDate,storeDesc
+    </sql>
+    <!--  insert data to store surface   -->
+    <insert id="storeSettled" parameterType="com.zyt.entity.Store" >
+         insert  into store values(0,#{StoreName},#{StoreOwner},#{StoreImg},#{StoreAddress},#{Longitude},#{Atitude},#{SettledDate},#{storeDesc})
+    </insert>
+
+    <select id="getStoreDetailInfos" parameterType="Integer" resultMap="BaseResult">
+         select <include refid="basicSql"/> from store where 1=1 limit #{start},#{end}
+    </select>
+
+    <select id="getStoreTotalCounts" resultType="Integer">
+        select count(*) from store
+    </select>
+
+    <update id="updateStoreInfos" parameterType="com.zyt.entity.Store">
+        update store <set>
+                            <if test="StoreName != null">storeName = #{StoreName},</if>
+                            <if test="StoreAddress != null">storeAddress = #{StoreAddress},</if>
+                            <if test="Longitude != null">longitude = #{Longitude},</if>
+                            <if test="Atitude != null">atitude = #{Atitude},</if>
+                            <if test="StoreDesc != null">storeDesc = #{StoreDesc}</if>
+                     </set>
+        where storeId = #{StoreId}
+    </update>
+
+    <delete id="deleteStoreInfosByStoreId" parameterType="Integer">
+          delete from store where storeId = #{storeId}
+    </delete>
+
+    <select id="getStoreNameByOwnerName" parameterType="String" resultType="String">
+          select storeName from store where storeOwner = #{storeOwnerName}
+    </select>
+
+    <select id="getStoreIdByStoreName" parameterType="String" resultType="int">
+        select  storeId from store where storeName = #{storeName}
+    </select>
+
+    <select id="getStoreInfosByStoreName" parameterType="String" resultMap="BaseResult">
+       select * from store where storeName = #{storeName}
+    </select>
+
+    <select id="getStoreIdByStoreOwnerName" parameterType="String" resultType="int">
+        select  storeId from store where storeOwner = #{storeOwner}
+    </select>
+
+    <select id="getStoreInfoByStoreId" parameterType="int" resultMap="BaseResult">
+         select * from store where 1 =1 and storeId = #{storeId}
+    </select>
+
+    <select id="getStoreInfoOfCurrentPostion" parameterType="String" resultMap="BaseResult">
+       select * from store where storeAddress like #{postion}
+    </select>
+
+    <select id="getTopFiveStoreInfo" parameterType="java.util.List" resultMap="BaseResult">
+          select  * from store where storeId in
+             <foreach collection="list" item="storeIdInfo" open="(" separator="," close=")">
+                #{storeIdInfo}
+             </foreach>
+    </select>
+
+    <select id="getStoreImgByStoreName" parameterType="String" resultType="String">
+       select storeImg from  store where 1 = 1 and storeName = #{storeName}
+    </select>
+
+    <select id="getStoreIdByOfCurrStoreName" parameterType="String" resultType="int">
+       select  storeId from store where 1 = 1 and storeName = #{store_Name}
+    </select>
+
+    <select id="getStoreIdByStoreOwnerUserName" parameterType="String" resultType="int">
+        select storeId from store where 1 = 1 and  storeOwner = #{userName}
+    </select>
+
+    <select id="getStoreInfoByStoreOwner" parameterType="String" resultMap="BaseResult">
+        select  * from store where 1 = 1 and storeOwner = #{userName}
+    </select>
+
+    <select id="getStoreNameByStoreId" parameterType="int" resultType="String">
+        select storeName from store where 1 = 1 and storeId = #{storeId}
+    </select>
+</mapper>

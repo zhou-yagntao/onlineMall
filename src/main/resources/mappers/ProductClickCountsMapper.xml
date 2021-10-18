@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.ProductClickCountsMapper">
+    <resultMap id="BaseResult" type="com.zyt.entity.ProductClick">
+            <result column="proClickId" property="ProClickId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <result column="user_id" property="user_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <result column="proClickProId" property="ProClickProId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <result column="proClickCounts" property="ProClickCounts" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <result column="proClickTime" property="ProClickTime" javaType="java.util.Date" jdbcType="DATE"/>
+    </resultMap>
+</mapper>

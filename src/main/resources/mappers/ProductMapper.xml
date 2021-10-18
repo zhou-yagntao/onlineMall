@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.ProductMapper">
+        <resultMap id="BaseResult" type="com.zyt.entity.Product">
+               <result column="prodId" property="ProdId" javaType="java.lang.Integer"  jdbcType="INTEGER"/>
+               <result column="prodSort" property="ProdSort" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+               <result column="prodName" property="ProdName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+               <result column="prodImage" property="ProdImage" javaType="java.lang.String" jdbcType="VARCHAR"/>
+               <result column="ProdReleaseTime" property="ProdReleaseTime" javaType="java.util.Date" jdbcType="DATE"/>
+               <result column="prodStatus" property="ProdStatus" javaType="java.lang.String" jdbcType="VARCHAR"/>
+               <result column="prodNvipAllPrice" property="ProdNvipAllPrice" javaType="java.lang.String" jdbcType="VARCHAR"/>
+               <result column="prodVipAllPrice" property="ProdVipAllPrice" javaType="java.lang.String" jdbcType="VARCHAR"/>
+               <result column="proIntegral" property="ProdIntegral" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+               <result column="proGrowthvalue" property="ProdGrowthvalue" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+               <result column="isOnSheleves" property="IsOnSheleves" javaType="java.lang.Boolean" jdbcType="BOOLEAN"/>
+               <result column="prodEveryMaxStorage" property="prodEveryMaxStorage" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+               <result column="prodMoral" property="prodMoral" javaType="java.lang.String" jdbcType="VARCHAR"/>
+               <result column="isUseCouple" property="IsUseCouple" javaType="java.lang.Boolean" jdbcType="BOOLEAN"/>
+               <result column="isUseIntegral" property="IsUseIntegral" javaType="java.lang.Boolean" jdbcType="BOOLEAN" />
+               <result column="proStoreName" property="ProStoreName" javaType="java.lang.String" jdbcType="VARCHAR"/>
+               <result column="prodBrandId" property="storeBrandId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+<!--               <association column="prodBrandId" property="storeBrand" javaType="com.zyt.entity.StoreBrand" jdbcType="INTEGER">-->
+<!--                      <result column="brandId"  property="BrandId" javaType="java.lang.Integer" jdbcType="INTEGER"/>-->
+<!--                      <result column="brandName" property="BrandName" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
+<!--                      <result column="brandType" property="BrandType" javaType="java.lang.String" jdbcType="VARCHAR" />-->
+<!--                      <result column="brandCreatTime" property="BrandCreatTime" javaType="java.util.Date" jdbcType="DATE"/>-->
+<!--                      <result column="brandDescrible" property="BrandDescrible" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
+<!--                      <result column="isForbidden" property="IsForbidden" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
+<!--                      <result column="indexLetter" property="IndexLetter" javaType="java.lang.String" jdbcType="VARCHAR"/>-->
+<!--               </association>-->
+               <!--配置商品与商品点击量之间的一一对应关系-->
+               <collection column="userPraiseId" property="productPraise" javaType="com.zyt.entity.ProductPraise" jdbcType="INTEGER">
+                      <result column="prodPid" property="ProdPid" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+                      <result column="prodPProId" property="ProdPProId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+                      <result column="prodPdesc" property="ProdPdesc" javaType="java.lang.String" jdbcType="VARCHAR" />
+                      <result column="prodScore" property="ProdScore" javaType="java.lang.Double" jdbcType="DOUBLE" />
+                      <result column="prodPTime" property="ProdPTime" javaType="java.util.Date" jdbcType="DATE" />
+               </collection>
+        </resultMap>
+       <sql id="BaseSql">
+              prodId,prodSort,prodName,prodImage,ProdReleaseTime DATE,prodStatus,prodNvipAllPrice VARCHAR(200),prodVipAllPrice,proIntegral,proGrowthvalue,proStoreName,prodBrandId,isOnSheleves,prodEveryMaxStorage,userProClickId,userPraiseId,prodMoral,isUseCouple,isUseIntegral
+       </sql>
+       <!--add product infos -->
+       <insert id="addNewStoreProduct" parameterType="com.zyt.entity.Product">
+        insert into product (prodId,prodSort,prodName,prodImage,ProdReleaseTime,prodStatus,prodNvipAllPrice,prodVipAllPrice,proIntegral,proGrowthvalue,proStoreName,prodBrandId,isOnSheleves,prodEveryMaxStorage,prodMoral,isUseCouple,isUseIntegral)values(0,#{ProdSort},#{ProdName},#{ProdImage},#{ProdReleaseTime},#{ProdStatus},#{ProdNvipAllPrice},#{ProdVipAllPrice},#{ProdIntegral},#{ProdGrowthvalue},#{ProStoreName},#{storeBrandId},#{IsOnSheleves},#{prodEveryMaxStorage},#{prodMoral},#{IsUseCouple},#{IsUseIntegral})
+       </insert>
+        <!--select prfocut infos-->
+       <select id="getAllProductRelationInfos" resultMap="BaseResult">
+       <!--
+         select p.*,n.proportionScore,c.proClickCounts from product p inner join (select prodId,concat((goodPraise/allScore*100),'%')AS proportionScore from
+         (select a.prodPProId prodId,sum(a.prodScore) goodPraise from produPraise a  where a.prodScore > 6) A,(select sum(b.prodScore)  allScore from produPraise b) as B) n on p.prodId = n.prodId and p.proStoreName = #{storeName} inner join productClick  c on c.proClickProId = p.prodId where 1=1 LIMIT #{start},#{end}
+
+         select distinct * from product  where 1 = 1  and proStoreName = #{storeName} limit #{start},#{end}-->
+         select distinct * from product  where 1 = 1  limit #{start},#{end}
+       </select>
+
+       <select id="allProductCountsCurrentStore" parameterType="String" resultType="int">
+              <!--select distinct count(*) from product p where 1 = 1 and p.proStoreName = #{storeName}-->
+              select count(*) from product p where 1 = 1
+       </select>
+
+       <select id="getProductInfosByItems" resultMap="BaseResult">
+              select * from product  where  1 = 1
+              <if test="productName != null"> and prodName = #{productName}</if>
+              <if test="storeName != null"> and proStoreName= #{storeName}</if>
+              <if test="prodBrandId != 0">and prodBrandId = #{prodBrandId}</if>
+              limit #{start},#{end}
+       </select>
+
+       <select id="getProductInfoCountsBYItems" resultType="int">
+              select count(*) from product where 1 = 1
+              <if test="productName != null"> and prodName = #{productName}</if>
+              <if test="storeName != null"> and proStoreName= #{storeName}</if>
+              <if test="prodBrandId != 0">and prodBrandId = #{prodBrandId}</if>
+       </select>
+
+       <delete id="deleteProductByProdId" parameterType="int">
+              delete from product where prodId = #{productId}
+       </delete>
+
+       <update id="updateProductCoupleState">
+              update  product set isUseCouple = #{coupleState} where prodId = #{productId}
+       </update>
+
+       <update id="updateProductIntegeral">
+              update product set isUseIntegral = #{integralState} where prodId = #{productId}
+       </update>
+
+       <select id="getProductInfoByProdId" parameterType="int" resultMap="BaseResult">
+              select * from product where prodId = #{productId}
+       </select>
+
+       <update id="updateProductIsOnSheleves" >
+              update product set isOnSheleves = #{flag} where prodId = #{productId}
+       </update>
+
+       <select id="searchProInfoByItems" resultMap="BaseResult">
+              select * from product where 1 = 1
+                         <if test="params != null">and prodName = #{params}</if>
+              limit #{start},#{end}
+       </select>
+
+       <select id="searchProInfoCountsByItems" resultType="int">
+              select count(*) from product where 1 = 1
+                       <if test="params != null">and prodName = #{params}</if>
+       </select>
+
+       <select id="getAllProductInfos" resultMap="BaseResult">
+              select *from product
+       </select>
+
+       <select id="getProductsInfoByProdId"  resultMap="BaseResult" parameterType="java.util.List">
+         select  * from product where prodId in
+              <foreach collection="list" item="prodId" open="(" separator="," close=")">
+                     #{prodId}
+              </foreach>
+       </select>
+
+       <select id="getAllProductInfoOfCurrBrand" parameterType="int" resultMap="BaseResult">
+              select * from product where 1 = 1 and prodBrandId = #{brandId}
+       </select>
+
+       <select id="getProductDetailsByProdIdAndStoreName" resultMap="BaseResult">
+              select * from product where 1 = 1 and  prodId = #{prodId}  and  proStoreName = #{storeName}
+       </select>
+
+       <select id="getCurrentProductPrice" parameterType="int" resultType="String">
+              select prodNvipAllPrice from product where 1 = 1 and prodId = #{prodId}
+       </select>
+
+       <select id="getCurrentProdBrandIdByBrandName" parameterType="String" resultType="int">
+          select distinct prodBrandId from product where prodName = #{prod_Name}
+       </select>
+
+       <select id="getGrouthOfCurrentProductByProdId" parameterType="int" resultType="int">
+         select proGrowthvalue from  product where 1 = 1 and prodId = #{prodId}
+       </select>
+
+       <select id="getInternalOfCurrentProductByProdId" parameterType="int" resultType="int">
+           select proIntegral from  product where 1 = 1 and prodId = #{prodId}
+       </select>
+
+       <select id="getProductInfoOfCurrStore" parameterType="String" resultMap="BaseResult">
+         select  * from  product where 1 = 1
+              <if test="storeName != null">and proStoreName = #{storeName}</if>
+       </select>
+
+       <select id="getProdIdByProdName" parameterType="String" resultType="int">
+         select  prodId from product where 1 = 1 and prodName = #{prod_Name} and proStoreName = #{storename}
+       </select>
+
+       <select id="getProductInfoOfCurrSecKillProdByProdId" parameterType="int" resultMap="BaseResult">
+             select  * from  product where 1 = 1
+              <if test="prod_Id != null">and prodId = #{prod_Id}</if>
+       </select>
+
+<!--       <select id="getProdImgInfoByProdId"  parameterType="int" resultType="String">-->
+<!--            select prodImage from product where 1 = 1-->
+<!--              <if test="prod_id != null">and prodId = #{prod_id}</if>-->
+<!--       </select>-->
+
+       <select id="getProdImgInfoByProdId" resultType="String">
+          select prodImage from product where 1 = 1 and prodId in
+          <foreach collection="array" item="prodId" open="(" separator="," close=")">
+            #{prodId}
+          </foreach>
+<!--              <if test="prod_id != null">and prodId = #{prod_id}</if>-->
+       </select>
+
+       <select id="getProductInfoOfCurrBrandId" parameterType="int" resultMap="BaseResult">
+              select  * from product where 1 = 1
+              <if test="brandId != null">and prodBrandId = #{brandId}</if>
+
+       </select>
+
+       <select id="getProductInfosByProdId" parameterType="java.util.List" resultMap="BaseResult">
+            select * from product where 1 = 1  and prodId in
+            <foreach collection="productId" open="(" separator="," close=")" item="prod_Id">
+                       #{prod_Id}
+            </foreach>
+
+       </select>
+</mapper>

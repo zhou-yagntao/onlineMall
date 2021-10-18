@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.VipMemberMapper">
+      <resultMap id="BaseResult" type="com.zyt.entity.VipMember">
+          <result column="vid" property="vid" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="level_id" property="levelId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="username" property="username" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="nickname" property="nickname" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="mobile" property="mobile" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="email" property="email" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="header" property="header" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="gender" property="gender" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="birth" property="birth" javaType="java.util.Date" jdbcType="DATE"/>
+          <result column="city" property="city" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="signs" property="signs" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="userType" property="userType" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="integration" property="integration" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="growth" property="growth" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="statuss" property="statuss" javaType="java.lang.Boolean" jdbcType="BOOLEAN"/>
+          <result column="create_time" property="create_time" javaType="java.util.Date" jdbcType="DATE"/>
+          <result column="social_user_Id" property="socialUserId" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="access_token" property="accessToken" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="expiress_in" property="expiressIn" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="integral" property="integral" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+      </resultMap>
+
+       <select id="getVipMemberInfoBySocialId" parameterType="String"  resultMap="BaseResult">
+            select * from vip_member where 1 = 1 and social_user_Id = #{socialId}
+       </select>
+
+       <update id="updateVipMemeberInfoByVid">
+          update vip_member
+           <set>
+               <if test="newAccessToken != null">access_token = #{newAccessToken}</if>
+               <if test="newExpiresIn != null">,expiress_in = #{newExpiresIn}</if>
+           </set>
+           where 1 = 1 and vid = #{vInfoId}
+       </update>
+
+        <select id="getLeaveIdOfFinally"  resultType="Integer">
+            select level_id from vip_member where 1 = 1 order by vid desc limit 0,1
+        </select>
+
+        <select id="getLeaveIdOfCurrentSocialId" parameterType="String" resultType="int">
+             select level_id from vip_member where 1 = 1 and social_user_Id = #{socialId}
+        </select>
+
+       <insert id="addVipMemeberInfo" parameterType="com.zyt.entity.VipMember">
+         insert  into vip_member
+         (vid,level_id,username,nickname,header,gender,birth,city,signs,statuss,create_time,social_user_Id,access_token,expiress_in)
+         values(0,#{levelId},#{username},#{nickname},#{header},#{gender},#{birth},#{city},#{signs},#{statuss},#{create_time},#{socialUserId},#{accessToken},#{expiressIn})
+       </insert>
+
+
+       <select id="getGrouthOfSocailAccount" parameterType="String" resultType="Integer">
+           select growth from vip_member where 1 = 1 and social_user_Id = #{socialId}
+       </select>
+
+       <update id="updateGrouthOfVipMemberOfCurrSocialId">
+         update  vip_member set growth = #{currGrouth} where 1 = 1 and social_user_Id = #{socialId}
+       </update>
+
+    <select id="getSoonUpdateGrouth" parameterType="String" resultType="Integer">
+         select growth from vip_member where 1 = 1 and social_user_Id = #{socialId}
+    </select>
+
+    <select id="getUserIdByUserName" parameterType="String" resultType="java.lang.Integer">
+       select vid from vip_member where 1 = 1 and nickname = #{userName}
+    </select>
+
+     <select id="getUserNameByUserId" parameterType="int" resultType="String">
+       select username from vip_member where 1 = 1 and vid = #{userId}
+     </select>
+
+     <update id="updateGrouthAndInternalOfCuurentUser" parameterType="int">
+       update vip_member
+         <set>
+             <if test="growth != null">growth = #{growth}</if>
+             <if test="integration != null">,integration = #{integration}</if>
+         </set>
+         where 1 = 1  and vid = #{memberId}
+     </update>
+
+     <select id="getVipMemberInfoOfCurrMemeberName" resultMap="BaseResult" parameterType="String">
+        select * from vip_member where 1 = 1 and  birth like #{subStrBirth} and nickname = #{memeberName}
+     </select>
+
+    <select id="getUserIdOfCurrVipMember" parameterType="String" resultType="int">
+        select vid from vip_member where 1 = 1
+        <if test="username != null">and  nickname = #{username}</if>
+    </select>
+
+    <insert id="addRelativeVipInfo" parameterType="String">
+       insert  into vip_member (vid,username,nickname) values(0,username,nickname)
+    </insert>
+</mapper>

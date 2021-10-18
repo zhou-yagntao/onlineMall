@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.OrderMapper">
+      <resultMap id="BaseResult" type="com.zyt.entity.Order">
+         <result column="order_id" property="order_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="member_id" property="member_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="order_sn" property="order_sn" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="coupon_id" property="coupon_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="create_time" property="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+          <result column="member_username" property="member_username" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="total_amount" property="total_amount" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+          <result column="pay_amount" property="pay_amount" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+          <result column="freight_amount" property="freight_amount" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+          <result column="promotion_amount" property="promotion_amount" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+          <result column="integration_amount" property="integration_amount" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="coupon_amount" property="coupon_amount" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="discount_amount" property="discount_amount" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+          <result column="pay_type" property="pay_type" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="source_type" property="source_type" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="order_status" property="order_status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="delivery_company" property="delivery_company" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="auto_confirm_time" property="auto_confirm_time" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="integration" property="integration" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="growth" property="growth" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="bill_type" property="bill_type" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="bill_header" property="bill_header" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="bill_content" property="bill_content" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="bill_receiver_phone" property="bill_receiver_phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="bill_receiver_email" property="bill_receiver_email" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="receiver_name" property="receiver_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="receiver_phone" property="receiver_phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="receiver_province" property="receiver_province" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="receiver_city" property="receiver_city" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="receiver_region" property="receiver_region" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="receiver_detail_address" property="receiver_detail_address" javaType="java.lang.String" jdbcType="VARCHAR"/>
+          <result column="note" property="note" javaType="java.lang.String" jdbcType="VARCHAR" />
+          <result column="confirm_status" property="confirm_status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="delete_status" property="delete_status" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="use_integration" property="use_integration" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="payment_time" property="payment_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+          <result column="delivery_time" property="delivery_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+          <result column="receive_time" property="receive_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+          <result column="comment_time" property="comment_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+          <result column="modify_time" property="modify_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+      </resultMap>
+      <insert id="saveOrderInfo" parameterType="com.zyt.entity.Order">
+          insert into orders values(0,
+                                   #{order.member_id},
+                                   #{order.order_sn},
+                                   #{order.coupon_id},
+                                   #{order.create_time},
+                                   #{order.member_username},
+                                   #{order.total_amount},
+                                   #{order.pay_amount},
+                                   #{order.freight_amount},
+                                   #{order.promotion_amount},
+                                   #{order.integration_amount},
+                                   #{order.coupon_amount},
+                                   #{order.discount_amount},
+                                   #{order.pay_type},
+                                   #{order.source_type},
+                                   #{order.order_status},
+                                   #{order.delivery_company},
+                                   #{order.auto_confirm_time},
+                                   #{order.integration},
+                                   #{order.growth},
+                                   #{order.bill_type},
+                                   #{order.bill_header},
+                                   #{order.bill_content},
+                                   #{order.bill_receiver_phone},
+                                   #{order.bill_receiver_email},
+                                   #{order.receiver_name},
+                                   #{order.receiver_phone},
+                                   #{order.receiver_province},
+                                   #{order.receiver_city},
+                                   #{order.receiver_region},
+                                   #{order.receiver_detail_address},
+                                   #{order.note},
+                                   #{order.confirm_status},
+                                   #{order.delete_status},
+                                   #{order.use_integration},
+                                   #{order.payment_time},
+                                   #{order.delivery_time},
+                                   #{order.receive_time},
+                                   #{order.comment_time},
+                                   #{order.modify_time})
+      </insert>
+
+    <select id="getOrderStatusOfCurrOrderSn" parameterType="String" resultType="int">
+        select order_status from orders where 1 = 1 <if test="orderSn != null">and order_sn = #{orderSn}</if>
+    </select>
+
+    <select id="getOrderInfoByOrderId" parameterType="int" resultMap="BaseResult">
+        select * from orders where 1 = 1 and order_id = #{orderId}
+    </select>
+
+    <update id="updateOrderInfoByOrderById" parameterType="int">
+       update orders set delete_status = #{code} where 1 = 1 and order_id = #{orderId}
+    </update>
+
+    <select id="getOrderPayInfoByOrderSn" parameterType="String" resultMap="BaseResult">
+       select * from orders where 1 = 1 <if test="orderSn != null">and order_sn = #{orderSn}</if>
+    </select>
+
+    <update id="handleUpdateOrderStatus">
+        update orders
+         <set>
+             <if test="code != null">order_status = #{code}</if>
+         </set>
+         where 1 = 1
+        <if test="outTradeNo != null">and order_sn = #{outTradeNo}</if>
+    </update>
+
+    <select id="getOrderInfoOfCurrentUser" resultMap="BaseResult">
+      select  * from orders where 1 = 1 and member_username = #{userName} and order_status = #{code}
+    </select>
+
+    <select id="getUserMemberNameOfCurrOrderSn" parameterType="String" resultType="String">
+        select member_username from orders where 1 = 1 and order_sn = #{orderSn}
+    </select>
+
+</mapper>

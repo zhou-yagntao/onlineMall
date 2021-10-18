@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.ProdPopularityMapper">
+    <resultMap id="BaseResult" type="com.zyt.entity.ProdPopularity">
+            <result column="ppoId" property="ppoId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <result column="pprodId" property="pprodId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <result column="popolarity" property="popolarity" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <result column="pstoreId" property="pstoreId" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+    </resultMap>
+    <select id="getProdPopularityInfoByProdId" parameterType="int" resultMap="BaseResult">
+        select  * from prodPopularity where pprodId = #{prodId}
+    </select>
+</mapper>

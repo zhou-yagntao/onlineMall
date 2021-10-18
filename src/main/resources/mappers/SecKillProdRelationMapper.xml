@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.SecKillProdRelationMapper">
+      <resultMap id="BaseResult" type="com.zyt.entity.SecKillProdRelation">
+          <result column="relation_id" property="relation_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+          <result column="promotion_session_id" property="promotion_session_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+          <result column="prod_id" property="prod_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+          <result column="seckill_price" property="seckill_price" javaType="java.lang.Integer" jdbcType="INTEGER" />
+          <result column="seckill_count" property="seckill_count" javaType="java.lang.Integer" jdbcType="INTEGER" />
+          <result column="seckill_limit" property="seckill_limit" javaType="java.lang.Integer" jdbcType="INTEGER" />
+          <result column="seckill_sort" property="seckill_sort" javaType="java.lang.Integer" jdbcType="INTEGER" />
+          <result column="store_id" property="store_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      </resultMap>
+
+    <select id="getSeckillProRelationInfoBySessionId" parameterType="int" resultMap="BaseResult">
+        select  * from seckill_prod_relation where 1 = 1
+        <if test="seckill_id != null">and promotion_session_id = #{seckill_id}</if>
+        group  by prod_id
+        limit #{start},#{end}
+    </select>
+
+    <select id="getSeckillProRelationCountsBySessionId" parameterType="int" resultType="int">
+        select  count(*) from seckill_prod_relation where 1 = 1
+        <if test="seckill_id != null">and promotion_session_id = #{seckill_id}</if>
+    </select>
+
+    <select id="getRelativeProductInfoOfCurrKillSessionByItems" parameterType="int" resultMap="BaseResult">
+          select  * from seckill_prod_relation where 1 = 1
+          <if test="int_prodId != null">and prod_id = #{int_prodId}</if>
+          <if test="int_session != null">and promotion_session_id = #{int_session}</if>
+          <if test="storeId != null">and store_id = #{storeId}</if>
+          group  by prod_id
+          limit #{start},#{end}
+    </select>
+
+    <select id="getRelativeProductCountsOfCurrKillSessionByItems" resultType="int" parameterType="int">
+        select  count(*) from seckill_prod_relation where 1 = 1
+        <if test="int_prodId != null">and prod_id = #{int_prodId}</if>
+        <if test="int_session != null">and promotion_session_id = #{int_session}</if>
+        <if test="storeId != null">and store_id = #{storeId}</if>
+    </select>
+
+    <insert id="saveRelativeProduct" parameterType="com.zyt.entity.SecKillProdRelation">
+        insert  into seckill_prod_relation values(0,#{secKillProdRelation.promotion_session_id},#{secKillProdRelation.prod_id},#{secKillProdRelation.seckill_price},#{secKillProdRelation.seckill_count},#{secKillProdRelation.seckill_limit},#{secKillProdRelation.seckill_sort},#{secKillProdRelation.store_id})
+    </insert>
+
+    <delete id="deleteKillRelativeProdInfo" parameterType="int">
+     delete from seckill_prod_relation where 1 = 1
+        <if test="relationId != null"> and relation_id = #{relationId}</if>
+    </delete>
+
+    <select id="getRelativeProdInfoOfCurrSeesionId" parameterType="int" resultMap="BaseResult">
+     select  * from seckill_prod_relation where 1 = 1
+        <if test="sec_kill_id != null">and promotion_session_id = #{sec_kill_id}</if>
+    </select>
+</mapper>

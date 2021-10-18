@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyt.mapper.PaymentInfoMapper">
+    <resultMap id="BaseResult" type="com.zyt.entity.PaymentInfo">
+        <result column="id" property="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="order_sn" property="order_sn" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="order_id" property="order_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+        <result column="alipay_trade_no" property="alipay_trade_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="total_amount" property="total_amount" javaType="java.lang.Double" jdbcType="DOUBLE" />
+        <result column="pay_subject" property="pay_subject" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="payment_status" property="payment_status" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="create_time" property="create_time" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="confirm_time" property="confirm_time" javaType="java.util.Date" jdbcType="DATE" />
+        <result column="callback_content" property="callback_content" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="callback_time" property="callback_time" javaType="java.util.Date" jdbcType="DATE" />
+    </resultMap>
+
+    <insert id="savePayMentInfo" parameterType="com.zyt.entity.PaymentInfo">
+        insert into  payment_info values(0,#{paymentInfo.order_sn},#{paymentInfo.order_id},#{paymentInfo.alipay_trade_no},#{paymentInfo.total_amount},#{paymentInfo.pay_subject},#{paymentInfo.payment_status},#{paymentInfo.create_time},#{paymentInfo.confirm_time},#{paymentInfo.callback_content},#{paymentInfo.callback_time})
+    </insert>
+</mapper>
